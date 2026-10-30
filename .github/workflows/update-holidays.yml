@@ -23,12 +23,8 @@ jobs:
       - name: Fetch RSS → JSON
         run: python scripts/fetch.py
 
-      - name: Commit & Push
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/nh0skkaj/holidaysvn.git
-          git add data/holidays.json
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Update holidays.json $(date -u +%Y-%m-%d)" && git push)
+      - name: Upload JSON
+        uses: actions/upload-artifact@v4
+        with:
+          name: holidays-json
+          path: data/holidays.json
