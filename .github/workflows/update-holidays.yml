@@ -1,14 +1,18 @@
+
 name: Update Holiday News
 
 on:
   schedule:
     - cron: '0 1 1 * *'
   workflow_dispatch:
+
 permissions:
   contents: write
+
 jobs:
   update:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -21,7 +25,10 @@ jobs:
       - name: Install dependencies
         run: pip install feedparser
 
-            - name: Upload JSON
+      - name: Fetch RSS to JSON
+        run: python scripts/fetch.py
+
+      - name: Upload JSON
         uses: actions/upload-artifact@v4
         with:
           name: holidays-json
